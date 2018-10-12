@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Currency Conversion Calculator</title>
+
+	<!-- CSS Stylizing -->
+	<style type="text/css">
+		body {
+			padding-left: 20px;
+		}
+
+		h2 {
+			font-size: 15px;
+		}
+		form,p {
+			margin-left: 100px;
+		}
+		
+	</style>
+
+</head>
+<body>
+	<h1>Currency Conversion Calculator</h1>
+	<h2>Enter the Amount of Euros you want to convert, press convert and the conversions will be displayed</h2>
+	<!-- Form that will allow user to enter amount for conversion and then a button to trigger currency conversion -->
+	<form name="currencyForm">
+		<input type="text" name="inputNum">
+
+		<input type="button" name="eval" value="Convert" onclick="convertCurrency(inputNum.value)">
+	</form>
+
+	<!-- paragraphs tags for all the conversion values that will pop up -->
+	<p id="USDollar">US Dollar: </p>
+	<p id="SwissFranc">Swiss Francs: </p>
+	<p id="Pound">1 Pound Sterling: </p>
+	<p id="SwedishKrona">Swedish Krona: </p>
+
+
+<script type="text/javascript">
+	//Loading the API
+	const url ='https://api.exchangeratesapi.io/latest';
+
+	//list of currencies -- they need to be global variables
+	var CHF,GBP,SEK,USD;
+
+	fetch(url)
+		//transform data into json
+		.then((resp) => resp.json())
+		//then load them  into the equal currencies
+		.then(function(data){
+
+			//Testing
+			//console.log(data);
+			//console.log(data.rates);
+			//console.log(data.rates.AUD);
+			//CFH = data.value;
+
+			//finding the rates in the json file by going to the rates and then searching for the key and taking the value
+			CHF = data.rates.CHF;
+			//console.log(CHF);
+			GBP = data.rates.GBP;
+			//console.log(GBP);
+			SEK = data.rates.SEK;
+			USD = data.rates.USD;
+
+		})
+		//if API not loaded correctly, error statement will be printed in console
+		.catch(function(error){
+			console.log(error);
+		});
+
+		//console.log(CHF);
+
+		//function that uses currencies from API and the value from the input to caluclate and display the conversion 
+		function convertCurrency(origNum){
+			//Swiss Franc Conversion
+			chfConvert = (origNum * CHF).toFixed(2);
+			document.getElementById("SwissFranc").innerHTML = "Swiss Francs: " + chfConvert;
+
+			//1 Pound Sterling Conversion 
+			gbpConvert = (origNum * GBP).toFixed(2);
+			document.getElementById("Pound").innerHTML = "1 Pound Sterling: "  + gbpConvert;
+
+			//Swedish Krona Conversion
+			sekConvert = (origNum * SEK).toFixed(2);
+			document.getElementById("SwedishKrona").innerHTML = "Swedish Krona: " + sekConvert;
+
+			//US Dollar Conversion
+			usdConvert = (origNum * USD).toFixed(2);
+			document.getElementById("USDollar").innerHTML = "US Dollar: " + usdConvert;
+		}
+
+
+	
+</script>
+</body>
+</html>

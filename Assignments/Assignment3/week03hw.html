@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+
+    <title>Week03Homework</title>
+
+    <style>
+      html, pre {
+        font-family: serif;
+      }
+      body {
+        width: 500px;
+        margin: 0 auto;
+        background-color: #1DACD6;
+      }
+      pre {
+        line-height: 1.5;
+        letter-spacing: 0.05rem;
+        padding: 1rem;
+        background-color: white;
+      }
+      label {
+        width: 200px;
+        margin-right: 33px;
+      }
+      select {
+        width: 350px;
+        padding: 5px;
+      }
+    </style>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <h1>Ajax & Fetch Exercise</h1>
+
+    <form>
+      <label for="frost-choose">Choose a poem</label>
+      <select id="frost-choose" name="frost-choose">
+        <option>Poem 1</option>
+        <option>Poem 2</option>
+        <option>Poem 3</option>
+      </select>
+    </form>
+
+    <h2>Various Robert Frost Poetry</h2>
+
+    <pre>
+
+    </pre>
+
+    <script>
+      //showing new information on screen without reloading whole webpage
+      //something that is displayed and then options for selection
+      var frostChoose = document.querySelector('select');
+      var frostDisplay = document.querySelector('pre');
+
+      //takes whatever option aka poem was selected
+      //then it will be displayed onto the webpage using the updateDisplay function
+      frostChoose.onchange = function() {
+        var frost = frostChoose.value;
+        updateDisplay(frost);
+      };
+
+      //updateDisplay function will make sure poem is chosen by removing spaces and making it lowercase and then getting the text file inside the same folder
+      function updateDisplay(frost) {
+        frost = frost.replace(" ","");
+        frost = frost.toLowerCase();
+        var url = frost + '.txt';
+
+        //fetch is a call to another function and then allows us to update page without refreshing 
+        //fetch takes one argument -- the path of the resource you want to fetch aka the poems in the folder
+        //then is a promise and it calls a function that puts the new text or new poem onto the page
+        fetch(url).then(function(response) {
+          response.text().then(function(text) {
+            frostDisplay.textContent = text;
+          });
+        });
+      };
+
+      //automatically puts poem 1 as the preselected and displays it on page
+      updateDisplay('Poem 1');
+      frostChoose.value = 'Poem 1';
+    </script>
+  </body>
+</html>
