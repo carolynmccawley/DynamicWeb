@@ -22,7 +22,7 @@ function astroTweets(){
 	//array of all astrological signs
 	const astroSigns = ["Aquarius", "Pisces", "Aries", "Taurus", "Gemini","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn"];
 	//array of keywords that I will search for 
-	const keyWords = ["because","have","must","need", "drama","hate"];
+	const keyWords = ["because","have","must","need", "drama","hate","dumb","stupid"];
 	//array of words that I don't want included in the twitterbot
 	const avoidWords = ["diagnosis", "selling", "Buenas","characteristics","election"];
 
@@ -65,8 +65,11 @@ function astroTweets(){
 
 	//checks whether or not the tweet was posted
 	function checkTweet(err,data,response){
+		//if not posted, it will run code again until tweet works
 		if (err) {
 			console.log("it didn't work");
+			console.log("trying again")
+			astroTweets();
 		} else {
 			console.log("it worked!");
 		}
@@ -77,10 +80,9 @@ function astroTweets(){
 	T.get('search/tweets', params, function(err, data, response){
 		//debugging
 		//console.log("Searching for " + params.q)
-		//console.log(data);
-
+		
 		//if the search didn't find anything, then search again
-		if (data.statuses == []) {
+		if (data.statuses[0].text == undefined) {
 			console.log("No results: will do another search");
 			astroTweets();
 		}
@@ -104,4 +106,4 @@ function astroTweets(){
 
 }
 
-astroTweets();
+//astroTweets();
