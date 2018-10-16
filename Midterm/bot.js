@@ -10,7 +10,7 @@ var T = new Twit(config);
 
 
 //calls function every hour
-//setInterval(astroTweets, 1000*60*60);
+setInterval(astroTweets, 1000*60*60);
 
 //every minute -- testing only do not leave for too long
 //setInterval(astroTweets,1000*10)
@@ -24,7 +24,7 @@ function astroTweets(){
 	//array of keywords that I will search for 
 	const keyWords = ["because","have","must","need", "drama","hate","dumb","stupid"];
 	//array of words that I don't want included in the twitterbot
-	const avoidWords = ["diagnosis", "selling", "Buenas","characteristics","election"];
+	const avoidWords = ["diagnosis", "selling", "Buenas","characteristics","election","character"];
 
 	//will only post tweet on twitter if true
 	var continuePost = true;
@@ -82,14 +82,16 @@ function astroTweets(){
 		//console.log("Searching for " + params.q)
 		
 		//if the search didn't find anything, then search again
-		if (data.statuses[0].text == undefined) {
+		if (data.statuses[0] == undefined) {
 			console.log("No results: will do another search");
 			astroTweets();
 		}
-		//take the text from the found tweet and assign it to a variable 
-		var tweet = data.statuses[0].text;
-		//check it tweet is useable 
-		parseTweet(tweet);
+		//take the text from the found tweet and assign it to a variable if found
+		else {
+			var tweet = data.statuses[0].text;
+			//check it tweet is useable 
+			parseTweet(tweet);
+		}
 
 
 		//if safe to Post, post the tweet
