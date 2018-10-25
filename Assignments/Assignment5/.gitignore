@@ -1,9 +1,0 @@
-#ignore package json
-package.json
-
-#ignore node 
-package-lock.json
-
-#ignore node modules
-node_modules
-
