@@ -5,7 +5,7 @@ var fs = require('fs');
 var data = fs.readFileSync('pets.json');
 
 var pets = JSON.parse(data);
-console.log(pets);
+//console.log(pets);
 
 
 console.log("server is starting");
@@ -26,26 +26,41 @@ app.use(express.static('public'));
 //if the pet already exists, it will be added to the array of owners
 //if the pet isn't in the array, new key will be created that is associated with 
 //an array of owners starting with the newly added person
+//cannot have two pet owners with the same name IF they have the same pet
 app.get('/add/:pet/:newName',addPet);
 function addPet(request,response){
 	var readData = request.params;
 	var addPet = readData.pet;
 	var addName = readData.newName;
+	var addingNew = true;
+
+	//only add pet to the array if its not already in there
 	if(pets[addPet]){
-		pets[addPet].push(addName);
+		if (pets[addPet].includes(addName)){
+			addingNew = false;
+		} else {
+			pets[addPet].push(addName);
+		}
 	} 
+	//if pet isn't in file, add new key and array and then push name onto array
 	else {
 		pets[addPet] = [];
 		pets[addPet].push(addName);
 	}
-	//pets[addPet] = addName;
 	var data = JSON.stringify(pets);
 	fs.writeFile('pets.json',data,finished);
 	function finished(err){
 		console.log('name has been added');
 	}
-	var reply = {
-		msg: "Your name has been added to the pets file"
+	if (addingNew){
+		var reply = {
+			msg: "Your name has been added to the pets file and you are now listed as owning a" + addPet	
+		}
+	}
+	else {
+		var reply = {
+			msg: "I'm sorry, this name is already listed as owning a " + addPet
+		}
 	}
 	response.send(reply);
 
