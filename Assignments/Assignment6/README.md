@@ -12,3 +12,6 @@ In order to create this app, you will need to:
         npm install ejs
         npm install request
         npm install body-parser
+        
+Once everything is installed and set up, you can run the app in your terminal using node or nodemon. 
+After, go to localhost/3000 and the user should see a box that allows them to search for an animal breed. 
