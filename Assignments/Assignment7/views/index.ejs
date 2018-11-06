@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+      <h1>Input an animal to get a list of breeds</h1>
+      <h3>Options include: barnyard, bird, cat, dog, horse, repile and smallfurry</h3>
+    <div class="container">
+      <fieldset>
+        <form action="/search" method="post">
+          <input name="breed" type="text" class="ghost-input" placeholder="Enter a Breed" required>
+          <input type="submit" class="ghost-button" value="Get Breed">
+        </form>
+          <!--      Goes through the list of breeds and puts each item in an unordered list item    -->
+      <% if(breedList !== null){ %>
+          <% for (var i =0; i < breedList.length; i++){ %>
+              <ul> <%= breedList[i].$t %></ul>
+          <% }; %>
+        <% }; %>
+          
+          <!--If theres an error-->
+        <% if(error !== null){ %>
+          <p><%= error %></p>
+        <% } %>
+      </fieldset>
+    </div>
+      <br>
+      <a href="http://localhost:3000/">Create New Account!</a>
+  </body>
+</html>
