@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" const="text/html;charset=UTF-8" />
+    <link href="http://fonts.googleapis.com/css?family=Comfortaa" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="style.css" >
+
+    <title>Simple Chat App</title>
+  </head>
+
+  <body>
+    <header>
+      <h1>Chat Box</h1>
+    </header>
+      
+         <section id="usercount">
+      </section>
+      
+      
+      <section id="userList">
+      </section>
+
+    <section>
+      <div id="change_username">
+	<input id="username" type="text" />
+	<button id="send_username" type="button">Change username</button>
+      </div>
+    </section>
+      
+   
+
+    <section id="chatroom">
+      <section id="feedback"></section>
+    </section>
+
+    
+
+    <section id="input_zone"> 
+      <input id="message" class="vertical-align" type="text" />
+      <button id="send_message" class="vertical-align" type="button">Send</button>
+    </section>
+
+   <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+      
+    <script>
+        
+$(function(){
+   	//make connection
+	var socket = io.connect('http://localhost:3000')
+
+	//buttons and inputs and sections on the page
+	var message = $("#message")
+	var username = $("#username")
+	var send_message = $("#send_message")
+	var send_username = $("#send_username")
+	var chatroom = $("#chatroom")
+	var feedback = $("#feedback")
+    var user_count = $("#usercount")
+    var user_list = $("#userList")
+
+	//calls new_message function with new message
+	send_message.click(function(){
+		socket.emit('new_message', {message : message.val()})
+	})
+
+	//shows new message
+	socket.on("new_message",function(data){
+        console.log('subitting message');
+		feedback.html('');
+		message.val('');
+		chatroom.append("<p class='message'>" + data.username + ": " + data.message + "</p>")
+	})
+
+	//calls changeusername function with new inputs
+	send_username.click(function(){
+		socket.emit('change_username', {username : username.val()})
+	})
+
+	//waiting for user to press keys to trigger typing function below
+	message.bind("keypress", function(){
+		socket.emit('typing')
+	})
+
+	//Will show message when someone is typing a message
+	socket.on('typing', function(data){
+		feedback.html("<p><i>" + data.username + " is typing a message..." + "</i></p>")
+	})
+    
+    //lists the number of users online
+    socket.on('userCount',function(data){
+        user_count.html('');
+        user_count.html("<p> Number of people online: "+ data.userCount + "</p>")
+    })
+    
+    //lists the users that are online by accessing the userlist and only displaying the username
+    socket.on('userList',function(data){
+        user_list.html('Online: ');
+        for (var i =0; i < data.userList.length; i ++){
+            user_list.append("<ul>" + data.userList[i].username + " </ul>")
+        }
+    })
+});
+    </script>
+  </body>
+</html>
+
+
+
+
+
