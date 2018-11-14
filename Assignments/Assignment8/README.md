@@ -7,7 +7,9 @@ To download and implement this app:
 2. Install the following in your terminal where your js file is:
     
     npm install express
+    
     npm install ejs
+    
     npm install socket.io
     
 Once everything is installed and set up, you can run the app in your terminal using node or nodemon. After, go to localhost/3000 and the user should see a chatbox and a page that tells them the number of users online, their usernames, and the abilty to change their username. 
