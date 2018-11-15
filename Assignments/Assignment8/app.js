@@ -84,12 +84,23 @@ io.on('connection', function(socket){
 
     socket.on('new_message', function(data){
         //broadcast the new message
-        io.sockets.emit('new_message', {message : data.message, username : socket.username});
+        var userIndex = 0;
+        for (var i = 0; i< onlineUsers.length; i ++){
+            if (onlineUsers[i].id == socket.id) {
+                userIndex = i;
+            }
+        }
+        io.sockets.emit('new_message', {message : data.message, username : onlineUsers[userIndex].username});
     })
 
     //broacasts when someone is typing a message
     socket.on('typing', function(data){
-    	socket.broadcast.emit('typing', {username : socket.username})
+        var userIndex = 0;
+        for (var i = 0; i< onlineUsers.length; i ++){
+            if (onlineUsers[i].id == socket.id) {
+                userIndex = i;
+            }
+        }
+    	socket.broadcast.emit('typing', {username : onlineUsers[userIndex].username})
     })
 })
-
