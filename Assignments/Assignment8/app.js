@@ -27,11 +27,10 @@ var onlineUsers=[];
 
 
 io.on('connection', function(socket){
-    console.log(socket.username);
+    //console.log(socket.username);
     //default username
 	socket.username = "Anonymous";
     
-    console.log(socket.username);
     //console.log(socket)
 
     //changes the username associated with each person's unique id
